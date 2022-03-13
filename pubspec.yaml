@@ -1,0 +1,45 @@
+name: shopsmart
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.15.0-116.0.dev <3.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  logger: ^1.1.0 # logger
+  shared_preferences: ^2.0.9 # shared preference
+  fluttertoast: ^8.0.8 # toast message
+  path_provider: ^2.0.7 # path provider
+  flutter_barcode_scanner: ^2.0.0 # barcode scanner
+  barcode_widget: ^2.0.1 # barcode widget
+  image_cropper: ^1.4.1 # image cropper
+  image_picker: ^0.8.4+4 # Image picker
+  progress_dialog: ^1.2.4 # progress dialog
+
+  # firebase
+  firebase_core: ^1.10.0
+  cloud_firestore: ^3.1.0
+  firebase_storage: ^10.1.0
+  firebase_auth: ^3.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  amazon_cognito_identity_dart_2: #^0.1.24+2
+    
+  flutter_lints: ^1.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/img/default_img.png
+    - assets/img/loading_gif.gif
+    - assets/img/Shopsmart3(S).jpg
