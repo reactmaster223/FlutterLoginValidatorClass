@@ -3,19 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shopsmart/Common/APIConst.dart';
 import 'package:shopsmart/Pages/SplashPage.dart';
-import 'package:shopsmart/Validators/FormValidator.dart';
 //import 'package:shopsmart/Pages/SignupPage.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 // import 'package:shopsmart/Pages/AuthPage.dart';
 
 final _formKeySplashPage = GlobalKey<FormState>();
-
-final _namefield = GlobalKey<FormFieldState>();
-final _emailfield = GlobalKey<FormFieldState>();
-final _passwordfield = GlobalKey<FormFieldState>();
-final _confirmpasswordfield = GlobalKey<FormFieldState>();
-
 
 class SignupPage extends StatefulWidget {
   @override
@@ -46,66 +39,8 @@ class _SignupPageState extends State<SignupPage> {
 
   static const PrimaryColor = Color.fromARGB(255, 16, 14, 24);
 
-
-  //added code
-  late String _password;
-  double _strength = 0;
-  // 0: No password
-  // 1/4: Weak
-  // 2/4: Medium
-  // 3/4: Strong
-  // 1: Great
-
-  RegExp numReg = RegExp(r".*[0-9].*");
-  RegExp letterReg = RegExp(r".*[A-Za-z].*");
-
-  String _displayText = 'Please enter a password';
-
-   _checkPassword(String value) {
-    _password = value.trim();
-
-    if (_password.isEmpty) {
-      setState(() {
-        _strength = 0;
-        _displayText = 'Please enter you password';
-      });
-    } else if (_password.length < 6) {
-      setState(() {
-        _strength = 1 / 4;
-        _displayText = 'Your password is too short';
-      });
-    } else if (_password.length < 8) {
-      setState(() {
-        _strength = 2 / 4;
-        _displayText = 'Your password is acceptable but not strong';
-      });
-    } else {
-      if (!letterReg.hasMatch(_password) || !numReg.hasMatch(_password)) {
-        setState(() {
-          // Password length >= 8
-          // But doesn't contain both letter and digit characters
-          _strength = 3 / 4;
-          _displayText = 'Your password is strong';
-        });
-      } else {
-        // Password length >= 8
-        // Password contains both letter and digit characters
-        setState(() {
-          _strength = 1;
-          _displayText = 'Your password is great';
-        });
-      }
-    }
-    print(_displayText);
-    // return _displayText;
-
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
-
     // new page needs scaffolding!
     return Scaffold(
       body: Container(
@@ -134,19 +69,10 @@ class _SignupPageState extends State<SignupPage> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 14.0),
                     child: TextFormField(
-                      key: _namefield,
-                      onChanged: (value) async {
-                        setState(() {
-                          _isShown = false;
-                        });
-                        _namefield.currentState!.validate();
-                      },
-                      // onChanged: (value) => _checkPassword(value),
-                      maxLength: 200,
+                      maxLength: 100,
                       autofocus: true,
                       controller: nameController,
                       decoration: new InputDecoration(
-                          // errorStyle: TextStyle(color: Colors.orange),
                           enabledBorder: const OutlineInputBorder(
                             // width: 0.0 produces a thin "hairline" border
                             borderSide: const BorderSide(
@@ -169,21 +95,20 @@ class _SignupPageState extends State<SignupPage> {
                         // code when the user saves the form.
                       },
                       validator: (String? value) {
-                        return FormValidator.validateName(value);
+                        final alphaNumericText = RegExp(r'^[a-zA-Z0-9]+$');
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        if (alphaNumericText.hasMatch(value) == false) {
+                          return 'Use alphanumeric characters only.';
+                        }
+                        return null;
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 18.0),
                     child: TextFormField(
-                      key: _emailfield,
-                      onChanged: (value) async {
-                        setState(() {
-                          _isShown = false;
-                        });
-                        _emailfield.currentState!.validate();
-                      },
-                      maxLength: 200,
                       autofocus: true,
                       controller: emailController,
                       decoration: new InputDecoration(
@@ -208,23 +133,17 @@ class _SignupPageState extends State<SignupPage> {
                         // This optional block of code can be used to run
                         // code when the user saves the form.
                       },
-                        validator: (String? value) {
-                          return FormValidator.validateEmail(value);
-                        },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 18.0),
                     child: TextFormField(
-                      key: _passwordfield,
-                      onChanged: (value) async {
-                        setState(() {
-                          _isShown = false;
-                        });
-                        _passwordfield.currentState!.validate();
-                      },
-                      obscureText: true,
-                      maxLength: 200,
                       autofocus: true,
                       controller: passwordController,
                       decoration: new InputDecoration(
@@ -250,23 +169,16 @@ class _SignupPageState extends State<SignupPage> {
                         // code when the user saves the form.
                       },
                       validator: (String? value) {
-                        return FormValidator.validatePassword(value);
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 0),
                     child: TextFormField(
-                      key: _confirmpasswordfield,
-                      // onChanged: (value) => _checkPassword(value),
-                      onChanged: (value) async {
-                        setState(() {
-                          _isShown = false;
-                        });
-                        _confirmpasswordfield.currentState!.validate();
-                      },
-                      obscureText: true,
-                      maxLength: 200,
                       autofocus: true,
                       controller: passwordCompareController,
                       decoration: new InputDecoration(
@@ -292,8 +204,10 @@ class _SignupPageState extends State<SignupPage> {
                         // code when the user saves the form.
                       },
                       validator: (String? value) {
-                        String password=passwordController.text;
-                        return FormValidator.validateConfirmPassword(value, password);
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
                       },
                     ),
                   ),

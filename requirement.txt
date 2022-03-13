@@ -1,0 +1,31 @@
+HI There, I have a flutter application that needs some validation work. I would like a reusable class that has some validation that I can use across the application. The class will need to be completely configurable.
+
+1. The Name fields should validate for:
+- non alpha characters
+- max length of 200
+- min length of 2
+2. The email field fields should validate for:
+- non alpha characters
+- max length of 200
+- ensure the email is valid with an @ and all of theTLD's like .com, .mil etc
+3. the password field should validate for:
+- max length of 200
+- min length of 12
+- password strength indicator
+- the password needs to be masked
+the password confirm field should validate for:
+- should be the same as the password field and validate the comparison of the 2 fields
+- max length of 200
+- min length of 12
+- password strength indicator
+- the password needs to be masked
+
+
+You will be given a working flutter app to start on. This is just about the validation on one page and that is all. The validation of the fields MUST be triggered on key down, this is important. In order to get payed I will need to be able to test the changes on both devices.
+
+- Do not upgrade the app's libraries without asking
+- The class needs to have unit tests and be well commented
+- The color scheme needs to be kept in place
+- The app needs to work the same on IOS and Android
+
+I only want experienced flutter engineers applying for this project.
