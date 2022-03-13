@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shopsmart/Common/APIConst.dart';
 import 'package:shopsmart/Pages/SplashPage.dart';
-import 'package:shopsmart/Validators/FormValidator.dart';
 //import 'package:shopsmart/Pages/SignupPage.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -15,7 +14,6 @@ final _namefield = GlobalKey<FormFieldState>();
 final _emailfield = GlobalKey<FormFieldState>();
 final _passwordfield = GlobalKey<FormFieldState>();
 final _confirmpasswordfield = GlobalKey<FormFieldState>();
-
 
 class SignupPage extends StatefulWidget {
   @override
@@ -169,7 +167,19 @@ class _SignupPageState extends State<SignupPage> {
                         // code when the user saves the form.
                       },
                       validator: (String? value) {
-                        return FormValidator.validateName(value);
+                        final alphaNumericText = RegExp(r'^[a-zA-Z0-9]+$');
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        else
+                          if (alphaNumericText.hasMatch(value) == false) {
+                            return 'Use alphanumeric characters only.';
+                          }
+                          else
+                            if (value.length<2) {
+                              return 'Input more than 2letters.';
+                            }
+                        return null;
                       },
                     ),
                   ),
@@ -208,9 +218,18 @@ class _SignupPageState extends State<SignupPage> {
                         // This optional block of code can be used to run
                         // code when the user saves the form.
                       },
-                        validator: (String? value) {
-                          return FormValidator.validateEmail(value);
-                        },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        else{
+                          bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                          if(emailValid==false) {
+                            return 'Not email.';
+                          }
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Padding(
@@ -250,7 +269,22 @@ class _SignupPageState extends State<SignupPage> {
                         // code when the user saves the form.
                       },
                       validator: (String? value) {
-                        return FormValidator.validatePassword(value);
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        else
+                        if(value.length<6) {
+                          return 'Password is too short!';
+                        }
+                        else
+                        if(value.length<8) {
+                          return 'Your password is acceptable but not strong!';
+                        }
+                        // else
+                        // if(value.length>=8) {
+                        //   return 'Your password is strong!';
+                        // }
+                        return null;
                       },
                     ),
                   ),
@@ -292,8 +326,14 @@ class _SignupPageState extends State<SignupPage> {
                         // code when the user saves the form.
                       },
                       validator: (String? value) {
-                        String password=passwordController.text;
-                        return FormValidator.validateConfirmPassword(value, password);
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        else
+                          if(value != passwordController.text) {
+                            return 'Please enter correct password';
+                          }
+                        return null;
                       },
                     ),
                   ),
